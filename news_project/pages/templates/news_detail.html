@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="../static/css/news_detail.css">
+{% endblock %}
+
+
+{% block content %}
+    <div class="news-detail">
+        <div class="news-detail-header">
+            <h1>{{ news.title }}</h1>
+            <img src="{{ news.image }}" class="news-img card-img-top" alt="...">
+        </div>
+        <div class="news-detail-content">
+            <p>{{ news.content }}</p>
+        </div>
+    </div>
+    <div class="other-news d-flex flex-wrap justify-content-center align-items-center">
+        {% for article in latest_articles %}
+            <div class="card other-news-card" href="">
+              {% if article.image %}
+                <a href="{% url 'news_detail' article.id %}">
+                    <img src="{{ article.image }}" class="card-img-top" alt="...">
+                  {% else %}
+                    <img src="../static/img/EP.svg" alt="..." class="card-img-top">
+                  {% endif %}
+                  <div class="card-body">
+                    <h5 class="card-title">{{article.title|safe}}</h5>
+                    <p class="card-text">{{article.description|truncatechars:200|safe }}</p>
+                  </div>
+                  <div class="card-footer bg-color-w border-0 d-flex justify-content-between align-items-center">
+                  {% with article.time_since_published as time %}
+                      {% if time %}
+                        <h5>{{article.time_since_published}}</h5>
+                      {% endif %}
+                  {% endwith %}
+                  </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
